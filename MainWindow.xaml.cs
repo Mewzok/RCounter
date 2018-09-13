@@ -1,7 +1,17 @@
 ﻿using System;
-using System.Runtime.InteropServices;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
 using System.Windows;
-using System.Windows.Interop;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 
 namespace RCounter
 {
@@ -10,74 +20,87 @@ namespace RCounter
     /// </summary>
     public partial class MainWindow : Window
     {
-        [DllImport("user32.dll")]
-        private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
+        int counter = 0;
+        int totalTries;
 
-        [DllImport("user32.dll")]
-        private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
-
-        private const int HOTKEY_ID = 9000;
-
-        // Modifiers
-        private const uint MOD_NONE = 0x0000; // None
-        private const uint MOD_ALT = 0x0001; // ALT
-        private const uint MOD_CTRL = 0x0002; // CTRL
-        private const uint MOD_SHIFT = 0x0004; // SHIFT
-        private const uint MOD_WIND = 0x0008; // Windows key
-        private const uint VK_CAPITAL = 0x14; // CAPS LOCK
-        private const uint VK_R = 0x52; // R key
+        private LowLevelKeyboardListener _listener;
 
         public MainWindow()
         {
+            totalTries = getTries();
             InitializeComponent();
         }
 
-        int counter = 0;
-        private IntPtr _windowHandle;
-        private HwndSource _source;
-
-        protected override void OnSourceInitialized(EventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            base.OnSourceInitialized(e);
+            _listener = new LowLevelKeyboardListener();
+            _listener.OnKeyPressed += _listener_OnKeyPressed;
 
-            _windowHandle = new WindowInteropHelper(this).Handle;
-            _source = HwndSource.FromHwnd(_windowHandle);
-            _source.AddHook(HwndHook);
-
-            RegisterHotKey(_windowHandle, HOTKEY_ID, MOD_CTRL, VK_R);
+            _listener.HookKeyboard();
         }
 
-        private IntPtr HwndHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        private void _listener_OnKeyPressed(object sender, KeyPressedArgs e)
         {
-            const int WM_HOTKEY = 0x0312;
-            switch (msg)
+            if (e.KeyPressed == Key.R)
             {
-                case WM_HOTKEY:
-                    switch (wParam.ToInt32())
-                    {
-                        case HOTKEY_ID:
-                            int vkey = (((int)lParam >> 16) & 0xFFFF);
-                            if (vkey == VK_R)
-                            {
-                                counter++;
-                                NumLabel.Content = counter;
-                            }
-                            handled = true;
-                            break;
-                    }
-                    break;
+                counter++;
+                NumLabel.Content = counter;
             }
-            return IntPtr.Zero;
         }
 
-        protected override void OnClosed(EventArgs e)
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            _source.RemoveHook(HwndHook);
-            UnregisterHotKey(_windowHandle, HOTKEY_ID);
-            base.OnClosed(e);
+            _listener.UnHookKeyboard();
         }
 
-        private void ResetButton_Click(object sender, RoutedEventArgs e)
+        private int getTries()
+        {
+            int tries;
+            // Get directory
+            var systemPath = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+            var complete = System.IO.Path.Combine(systemPath, "ResetCounter");
+
+            var filePath = System.IO.Path.Combine(complete, "totaltries.txt");
+
+            // Make sure file doesn't already exist
+            if(!File.Exists(filePath))
+            {
+                // If it doesn't, create it, and write the default tries (0) to it
+                Directory.CreateDirectory(complete.ToString());
+                File.Create(filePath).Close();
+
+                StreamWriter sw = new StreamWriter(filePath);
+                sw.Write("0");
+                sw.Close();
+            }
+
+            // Whether the file existed already or not, read the number of tries written and return it
+            StreamReader sr = new StreamReader(filePath);
+            tries = Convert.ToInt32(sr.ReadLine());
+            sr.Close();
+
+            // Return tries
+            return tries;
+        }
+
+        private void AddButton_Click(object sender, RoutedEventArgs e)
+        {
+            var systemPath = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+            var complete = System.IO.Path.Combine(systemPath, "ResetCounter");
+
+            var filePath = System.IO.Path.Combine(complete, "totaltries.txt");
+
+            totalTries += counter;
+            counter = 0;
+            NumLabel.Content = 0;
+
+            using (StreamWriter writeTotal = new StreamWriter(filePath, false))
+            {
+                writeTotal.WriteLine(totalTries.ToString());
+            }
+        }
+
+        private void ClearButton_Click(object sender, RoutedEventArgs e)
         {
             counter = 0;
             NumLabel.Content = 0;

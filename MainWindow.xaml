@@ -5,17 +5,32 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RCounter"
         mc:Ignorable="d"
-        Title="Reset Counter" Height="200" Width="350">
-    <Grid>
+        Title="Reset Counter" Height="160" Width="309.889" Loaded="Window_Loaded" ResizeMode="CanMinimize" >
+    <Grid Margin="0">
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                 <GradientStop Color="#FF79B5F3" Offset="0"/>
                 <GradientStop Color="#FFCEE6FF" Offset="1"/>
             </LinearGradientBrush>
         </Grid.Background>
-        <Label Content="Resets:" Margin="113.5,10,113.5,0" VerticalAlignment="Top" Width="115" Height="47" FontFamily="Power Red and Green" FontSize="36" HorizontalAlignment="Center"/>
-        <Label Name="NumLabel" Content="0" Margin="137,57,137,67" FontFamily="Power Red and Green" FontSize="24"/>
-        <Button Name="ResetButton" Content="Reset" HorizontalAlignment="Left" Margin="114,129,0,0" VerticalAlignment="Top" Width="114" Height="30" FontSize="18" FontFamily="Power Red and Green" Click="ResetButton_Click"/>
+        <Label Content="Resets:" Margin="0" VerticalAlignment="Top" Width="116" Height="47" FontFamily="Power Red and Green" FontSize="36" HorizontalAlignment="Center"/>
+        <Label Name="NumLabel" Content="0" Margin="0" FontFamily="Power Red and Green" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Height="40" Width="116"/>
+        <Button Name="AddButton" Content="Add" Margin="0" Width="152" Height="30" FontSize="18" FontFamily="Power Red and Green" Click="AddButton_Click" VerticalAlignment="Bottom" HorizontalAlignment="Left">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="White" Offset="0"/>
+                    <GradientStop Color="#FF00AA1F" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+        <Button Name="ClearButton" Content="Clear" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="152" Height="30" FontSize="18" FontFamily="Power Red and Green" Click="ClearButton_Click">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="White" Offset="0"/>
+                    <GradientStop Color="#FFD10000" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
 
     </Grid>
 </Window>
