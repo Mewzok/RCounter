@@ -45,6 +45,17 @@ namespace RCounter
             {
                 counter++;
                 NumLabel.Content = counter;
+
+                // Play sound when counter has hit 100, and different sound at 500
+                if(counter % 100 == 0 && counter % 500 != 0)
+                {
+                    System.Media.SoundPlayer player = new System.Media.SoundPlayer(Properties.Resources.Pokémon_Level_Up_Sound_Effect);
+                    player.Play();
+                } else if(counter % 500 == 0)
+                {
+                    System.Media.SoundPlayer player2 = new System.Media.SoundPlayer(Properties.Resources.Item_Get___Poke_mon_Colosseum_IKVXBxC4Gds);
+                    player2.Play();
+                }
             }
         }
 
