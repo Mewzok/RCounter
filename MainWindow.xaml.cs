@@ -29,6 +29,9 @@ namespace RCounter
         {
             totalTries = getTries();
             InitializeComponent();
+
+            // Show tries on GUI
+            TotalLabel.Content = totalTries;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -104,6 +107,9 @@ namespace RCounter
             totalTries += counter;
             counter = 0;
             NumLabel.Content = 0;
+
+            // Update total tries counter
+            TotalLabel.Content = totalTries;
 
             using (StreamWriter writeTotal = new StreamWriter(filePath, false))
             {

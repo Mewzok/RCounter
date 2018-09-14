@@ -13,8 +13,10 @@
                 <GradientStop Color="#FFCEE6FF" Offset="1"/>
             </LinearGradientBrush>
         </Grid.Background>
-        <Label Content="Resets:" Margin="0" VerticalAlignment="Top" Width="116" Height="47" FontFamily="Power Red and Green" FontSize="36" HorizontalAlignment="Center"/>
-        <Label Name="NumLabel" Content="0" Margin="0" FontFamily="Power Red and Green" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Height="40" Width="116"/>
+        <Label Content="Resets:" Margin="10,0,178,0" VerticalAlignment="Top" Width="116" Height="47" FontFamily="Power Red and Green" FontSize="36" HorizontalAlignment="Center"/>
+        <Label Content="Total:" Margin="10,47,178,0" VerticalAlignment="Top" Width="116" Height="47" FontFamily="Power Red and Green" FontSize="36" HorizontalAlignment="Center"/>
+        <Label Name="NumLabel" Content="0" Margin="178,7,10,84" FontFamily="Power Red and Green" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Height="40" Width="116"/>
+        <Label Name="TotalLabel" Content="0" Margin="178,54,10,37" FontFamily="Power Red and Green" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Height="40" Width="116"/>
         <Button Name="AddButton" Content="Add" Margin="0" Width="152" Height="30" FontSize="18" FontFamily="Power Red and Green" Click="AddButton_Click" VerticalAlignment="Bottom" HorizontalAlignment="Left">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
